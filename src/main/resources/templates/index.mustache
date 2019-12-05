@@ -1,0 +1,24 @@
+<html>
+
+<body>
+<div>
+    <form method="post">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <input type="text" name="taskName" placeholder="Введите название задачи"/>
+        <input type="text" name="descriptionTask" placeholder="Введите описание задачи"/>
+        <input type="date" name="date" placeholder="Введите дату"/>
+        <input type="text" name="contacts" placeholder="Введите контакты"/>
+        <button type="submit">Добавить</button>
+    </form>
+</div>
+<div>Список задач</div>
+{{#abc}}
+    <div>
+        <b>{{id}}</b>
+        <span>{{taskName}}</span>
+        <span>{{descriptionTask}}</span>
+        <span>{{contacts}}</span>
+    </div>
+{{/abc}}
+</body>
+</html>
