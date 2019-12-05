@@ -2,13 +2,28 @@
 
 <body>
 <div>
-    <form method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <form method="post" action="add">
         <input type="text" name="taskName" placeholder="Введите название задачи"/>
         <input type="text" name="descriptionTask" placeholder="Введите описание задачи"/>
         <input type="date" name="date" placeholder="Введите дату"/>
         <input type="text" name="contacts" placeholder="Введите контакты"/>
         <button type="submit">Добавить</button>
+    </form>
+</div>
+<div>
+    <form method="post" action="change">
+        <input type="number" name="id" placeholder="Id"/>
+        <input type="text" name="taskName" placeholder="Введите название задачи"/>
+        <input type="text" name="descriptionTask" placeholder="Введите описание задачи"/>
+        <input type="date" name="date" placeholder="Введите дату"/>
+        <input type="text" name="contacts" placeholder="Введите контакты"/>
+        <button type="submit">Изменить</button>
+    </form>
+</div>
+<div>
+    <form method="post" action="delete">
+        <input type="number" name="id" placeholder="Id"/>
+        <button type="submit">Удалить</button>
     </form>
 </div>
 <div>Список задач</div>
@@ -17,6 +32,7 @@
         <b>{{id}}</b>
         <span>{{taskName}}</span>
         <span>{{descriptionTask}}</span>
+        <span>{{date}}</span>
         <span>{{contacts}}</span>
     </div>
 {{/abc}}

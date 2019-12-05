@@ -4,10 +4,11 @@ import com.zubarev.taskmanager.taskmanager.modal.Task;
 import com.zubarev.taskmanager.taskmanager.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class TaskController {
@@ -17,50 +18,54 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/getAllTasks")
-    public @ResponseBody
-    List<Task> getAllTasks(){
-        return taskService.getAll();
-    }
+//    @GetMapping("/getAllTasks")
+//    public @ResponseBody
+//    List<Task> getAllTasks(){
+//        return taskService.getAll();
+//    }
+//
+//
+//
+//    @PostMapping("/addTask")
+//    public @ResponseBody
+//    Task create(@RequestBody Task task){
+//        return taskService.addTask(task);
+//    }
 
 
-
-    @PostMapping("/addTask")
-    public @ResponseBody
-    Task create(@RequestBody Task task){
-        return taskService.addTask(task);
-    }
-
-
-
-    @DeleteMapping("/deleteTask/{id}")
-    public String delete(@PathVariable Long id, Model model){
+    @PostMapping("delete")
+    public String delete(@RequestParam Long id, Model model){
         taskService.deleteTaskId(id);
         model.addAttribute("abc",taskService.getAll());
         return "index";
     }
 
-    @PutMapping("/index")
-    public String updateTask(@PathVariable Long id,@RequestBody Task task,Model model){
-        task.setId(id);
+    @PostMapping("change")
+    public String change(@RequestParam String id,@RequestParam String taskName, @RequestParam String descriptionTask, @RequestParam String date, @RequestParam String contacts,Model model){
+        Date date1=new Date(Integer.parseInt(date.substring(0,3)),Integer.parseInt(date.substring(5,6)),Integer.parseInt(date.substring(8,9)));
+        Task task=new Task(taskName,descriptionTask,date1,contacts);
+        task.setId(Long.parseLong(id));
         taskService.changeTask(task);
         model.addAttribute("abc",taskService.getAll());
         return "index";
     }
 
 
+    @GetMapping
+    public String getAll(Model model) {
 
-    @GetMapping("/index")
-    public  String getAll(Model model){
-
-        model.addAttribute("abc",taskService.getAll());
+        model.addAttribute("abc", taskService.getAll());
         return "index";
     }
-    @PostMapping("/index")
-    public String add(@RequestParam String taskName, @RequestParam String descriptionTask, @RequestParam Date date, @RequestParam String contacts, Model model){
-        Task task=new Task(taskName,descriptionTask,date,contacts);
+
+    @PostMapping("add")
+    public String add(@RequestParam String taskName, @RequestParam String descriptionTask, @RequestParam String date, @RequestParam String contacts, Model model) {
+        System.out.println(date);
+
+        Date date1 = new Date(Integer.parseInt(date.substring(0, 3)), Integer.parseInt(date.substring(5, 6)), Integer.parseInt(date.substring(8, 9)));
+        Task task = new Task(taskName, descriptionTask, date1, contacts);
         taskService.addTask(task);
-        model.addAttribute("abc",taskService.getAll());
+        model.addAttribute("abc", taskService.getAll());
         return "index";
     }
 }
