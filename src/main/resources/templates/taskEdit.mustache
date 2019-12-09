@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{{#add}}Create new Task{{/add}}{{^add}}Edit Task{{/add}}</title>
+</head>
+<body>
+<h1>{{#add}}Create new Task:{{/add}}{{^add}}Edit Task:{{/add}}</h1>
+<a href="/tasks">Back to task List</a>
+<br/><br/>
+<form action="{{#add}}/tasks/add{{/add}}{{^add}}/tasks/{{tasks.id}}/edit{{/add}}" name="tasks" method="POST">
+    <table border="0">
+        {{#tasks.id}}
+            <tr>
+                <td>ID</td>
+                <td>:</td>
+                <td>{{tasks.id}}</td>
+            </tr>
+        {{/tasks.id}}
+        <tr>
+            <td>Task Name</td>
+            <td>:</td>
+            <td><input type="text" name="taskName" value="{{#tasks.taskName}}{{tasks.taskName}}{{/tasks.taskName}}" /></td>
+        </tr>
+        <tr>
+            <td>Description Task</td>
+            <td>:</td>
+            <td><input type="text" name="descriptionTask" value="{{#tasks.descriptionTask}}{{tasks.descriptionTask}}{{/tasks.descriptionTask}}" /></td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>:</td>
+            <td><input type="date" name="date" value="2019-01-01" /></td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td>:</td>
+            <td><input type="time" name="time" value="12:00" /></td>
+
+        </tr>
+        <tr>
+            <td>Contacts</td>
+            <td>:</td>
+            <td><input type="text" name="contacts" value="{{#tasks.contacts}}{{tasks.contacts}}{{/tasks.contacts}}" /></td>
+        </tr>
+    </table>
+    <input type="submit" value="{{#add}}Create{{/add}}{{^add}}Update{{/add}}" />
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div class="error">{{#errorMessage}}{{errorMessage}}{{/errorMessage}}</div>
+</body>
+</html>

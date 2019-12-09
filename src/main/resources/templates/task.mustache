@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Task Details</title>
+</head>
+<body>
+<h1>View Tasks</h1>
+<a href="/tasks">Back to Task List</a>
+<br/><br/>
+{{#tasks}}
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td>{{tasks.id}}</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td>{{tasks.taskName}}</td>
+        </tr>
+        <tr>
+            <td>Description Task</td>
+            <td>:</td>
+            <td>{{tasks.descriptionTask}}</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>:</td>
+            <td>{{#tasks.date}}{{tasks.date}}{{/tasks.date}}</td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td>:</td>
+            <td>{{#tasks.time}}{{tasks.time}}{{/tasks.time}}</td>
+        </tr>
+        <tr>
+            <td>Contacts</td>
+            <td>:</td>
+            <td>{{#tasks.contacts}}{{tasks.contacts}}{{/tasks.contacts}}</td>
+        </tr>
+    </table>
+    <br/><br/>
+    {{#allowDelete}}
+        <form action="/tasks/{{tasks.id}}/delete" method="POST">
+            Delete this task? <input type="submit" value="Yes" />
+        </form>
+    {{/allowDelete}}
+    {{^allowDelete}}
+        <div>
+            <a href="/tasks/{{tasks.id}}/edit">Edit</a> |
+            <a href="/tasks/{{tasks.id}}/delete">Delete</a>
+        </div>
+    {{/allowDelete}}
+{{/tasks}}
+{{#errorMessage}}
+    <div class="error">{{errorMessage}}</div>
+{{/errorMessage}}
+</body>
+</html>

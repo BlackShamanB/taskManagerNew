@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Task List</title>
+</head>
+<body>
+<h1>Task List</h1>
+
+<div>
+    <nobr>
+        <a href="/tasks/add">Add Task</a> |
+        <a href="/">Back to Index</a>
+    </nobr>
+</div>
+<br/><br/>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Task Name</th>
+            <th>Description Task</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Contacts</th>
+            <th>Edit</th>
+        </tr>
+        {{#tasks}}
+            <tr>
+                <td><a href="/tasks/{{id}}">{{id}}</a></td>
+                <td><a href="/tasks/{{id}}">{{taskName}}</a></td>
+                <td><a href="/tasks/{{id}}">{{descriptionTask}}</a></td>
+                <td>{{#date}}{{date}}{{/date}}</td>
+                <td>{{#time}}{{time}}{{/time}}</td>
+                <td>{{#contacts}}{{contacts}}{{/contacts}}</td>
+                <td><a href="/tasks/{{id}}/edit">Edit</a></td>
+            </tr>
+        {{/tasks}}
+    </table>
+</div>
+<br/><br/>
+</body>
+</html>
