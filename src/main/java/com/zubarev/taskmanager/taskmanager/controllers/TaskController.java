@@ -2,32 +2,35 @@ package com.zubarev.taskmanager.taskmanager.controllers;
 
 import com.zubarev.taskmanager.taskmanager.modal.Task;
 import com.zubarev.taskmanager.taskmanager.service.TaskService;
-import org.checkerframework.checker.units.qual.Time;
+import com.zubarev.taskmanager.taskmanager.swpush.fcm.FcmClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
-import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Controller
 public class TaskController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private TaskService taskService;
+    private final FcmClient fcmClient;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, FcmClient fcmClient) {
         this.taskService = taskService;
+        this.fcmClient = fcmClient;
+    }
+
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> register(@RequestBody Mono<String> token) {
+        return token.doOnNext(t -> this.fcmClient.subscribe("chuck", t)).then();
     }
 
     @GetMapping(value = "/tasks")
@@ -38,28 +41,23 @@ public class TaskController {
     }
 
     @PostMapping("tasks/add")
-    //public String add(@RequestParam String taskName, @RequestParam String descriptionTask, @RequestParam String date, @RequestParam String time, @RequestParam String contacts, Model model) {
     public String addTask(Model model, @ModelAttribute("tasks") Task task) {
-       try {
-//           LocalDate date1= LocalDate.of(Integer.parseInt(date.substring(0,4)),Integer.parseInt(date.substring(6,7)),Integer.parseInt(date.substring(9,10)));
-//           LocalTime time1= LocalTime.of(Integer.parseInt(time.substring(0,1)),Integer.parseInt(time.substring(3,4)));
-//           Task newTask=new Task(taskName,descriptionTask,date1,time1,contacts);
-           Task newTask =taskService.addTask(task);
-           return "redirect:/tasks/" + newTask.getId();
-       }
-       catch (Exception ex){
-           String errorMessage=ex.getMessage();
-           logger.error(errorMessage);
-           model.addAttribute("errorMessage",errorMessage);
+        try {
+            Task newTask = taskService.addTask(task);
+            return "redirect:/tasks/" + newTask.getId();
+        } catch (Exception ex) {
+            String errorMessage = ex.getMessage();
+            logger.error(errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
 
-           model.addAttribute("add",true);
-           return "taskEdit";
-       }
+            model.addAttribute("add", true);
+            return "taskEdit";
+        }
     }
 
     @GetMapping(value = {"/tasks/add"})
     public String showAddTask(Model model) {
-            Task task = new Task("","",LocalDate.now(),LocalTime.now(),"");
+        Task task = new Task("", "", LocalDate.now(), LocalTime.now(), "");
         model.addAttribute("add", true);
         model.addAttribute("tasks", task);
 
@@ -81,7 +79,7 @@ public class TaskController {
     }
 
     @PostMapping(value = {"/tasks/{taskId}/edit"})
-    public String updateTask(@ModelAttribute("tasks") Task task,Model model,
+    public String updateTask(@ModelAttribute("tasks") Task task, Model model,
                              @PathVariable long taskId) {
         try {
             task.setId(taskId);

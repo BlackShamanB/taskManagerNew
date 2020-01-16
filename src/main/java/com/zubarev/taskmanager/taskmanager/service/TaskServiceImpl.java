@@ -1,16 +1,13 @@
 package com.zubarev.taskmanager.taskmanager.service;
 
+import com.google.common.collect.Lists;
 import com.zubarev.taskmanager.taskmanager.modal.Task;
 import com.zubarev.taskmanager.taskmanager.repos.TaskRepos;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.google.common.collect.Lists;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,4 +62,5 @@ public class TaskServiceImpl implements TaskService{
     public Long count() {
         return taskrepos.count();
     }
+
 }
