@@ -24,6 +24,7 @@ self.addEventListener('push', async event => {
     };
 });
 
+
 async function getDb() {
     if (this.db) {
         return Promise.resolve(this.db);
@@ -46,6 +47,18 @@ async function getDb() {
 
 
 messaging.setBackgroundMessageHandler(function(payload) {
+    const notificationTitle = 'Background Title (client)';
+    const notificationOptions = {
+        body: 'Background Body (client)',
+        icon: '/mail.png'
+    };
+
+    return self.registration.showNotification(notificationTitle,
+        notificationOptions);
+});
+
+
+messaging.onMessage(function(payload) {
     const notificationTitle = 'Background Title (client)';
     const notificationOptions = {
         body: 'Background Body (client)',

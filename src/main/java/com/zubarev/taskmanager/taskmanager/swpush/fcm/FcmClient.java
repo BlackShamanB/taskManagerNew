@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class FcmClient {
+public class FcmClient{
 
     public FcmClient(FcmSettings settings) {
         Path p = Paths.get(settings.getServiceAccountFile());
@@ -37,11 +37,10 @@ public class FcmClient {
 
         Message message = Message.builder().putAllData(data).setTopic("chuck")
                 .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
-                        .setNotification(new WebpushNotification("Background Title (server)",
-                                "Background Body (server)", "mail2.png"))
+//                        .setNotification(new WebpushNotification(data.get("taskName"),
+//                                data.get("descriptionTask")+" "+data.get("contacts"), "mail2.png"))
                         .build())
                 .build();
-
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
         System.out.println("Sent message: " + response);
     }

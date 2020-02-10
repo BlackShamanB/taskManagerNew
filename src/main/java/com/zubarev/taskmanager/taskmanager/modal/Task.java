@@ -1,19 +1,14 @@
 package com.zubarev.taskmanager.taskmanager.modal;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 public class Task implements Serializable {
@@ -22,7 +17,7 @@ public class Task implements Serializable {
     private Long id;
     private String taskName;
     private String descriptionTask;
-    @DateTimeFormat(pattern ="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
@@ -43,35 +38,49 @@ public class Task implements Serializable {
     public Long getId() {
         return id;
     }
-    public String getTaskName(){
+
+    public String getTaskName() {
         return taskName;
     }
-    public String getDescriptionTask(){
+
+    public String getDescriptionTask() {
         return descriptionTask;
     }
-    public LocalDate getDate(){
+
+    public LocalDate getDate() {
         return date;
     }
-    public String getContacts(){
+
+    public String getContacts() {
         return contacts;
     }
-    public LocalTime getTime() { return time; }
+
+    public LocalTime getTime() {
+        return time;
+    }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public void setTaskName(String taskName){
-        this.taskName=taskName;
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
-    public void setDescriptionTask(String descriptionTask){
-        this.descriptionTask=descriptionTask;
+
+    public void setDescriptionTask(String descriptionTask) {
+        this.descriptionTask = descriptionTask;
     }
-    public void setDate(LocalDate date){
-        this.date=date;
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
-    public void setTime(LocalTime time) { this.time = time; }
-    public void setContacts(String contacts){
-        this.contacts=contacts;
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
     }
 
 

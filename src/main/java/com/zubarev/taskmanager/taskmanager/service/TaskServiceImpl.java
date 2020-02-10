@@ -16,8 +16,6 @@ public class TaskServiceImpl implements TaskService{
     private final TaskRepos taskrepos;
     @PostConstruct
     public void initSomeData(){
-        LocalTime time;
-        LocalDate date = null;
         taskrepos.save(new Task("Task 1", "Desc 1",  LocalDate.now(), LocalTime.now(), "contacts 1"));
         taskrepos.save(new Task("Task 2", "Desc 2", LocalDate.now(),LocalTime.now(),"contacts 2"));
         taskrepos.save(new Task("Task 3", "Desc 3", LocalDate.now(),LocalTime.now(), "contacts 3"));

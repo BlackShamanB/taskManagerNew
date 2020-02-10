@@ -37,11 +37,11 @@ async function init() {
 async function showData() {
     const db = await getDb();
     const tx = db.transaction('tasks', 'readonly');
-    const store = tx.objectStore('tasks');
-    store.getAll().onsuccess = e => showJokes(e.target.result);
+    const store = tx.objectStore('Chuck');
+    store.getAll().onsuccess = e => showTask(e.target.result);
 }
 
-function showJokes(tasks) {
+function showTask(tasks) {
     const table = document.getElementById('outTable');
 
     tasks.sort((a, b) => parseInt(b.ts) - parseInt(a.ts));

@@ -21,7 +21,9 @@ public class PushTaskService {
 
     private final WebClient webClient;
 
-    private  final TaskService taskService;
+    private final TaskService taskService;
+
+    private int seq = 0;
 
     public PushTaskService(FcmClient fcmClient, WebClient webClient, TaskService taskService) {
         this.fcmClient = fcmClient;
@@ -29,32 +31,35 @@ public class PushTaskService {
         this.taskService = taskService;
     }
 
-    private int seq = 0;
 
-
-    @Scheduled(fixedDelay = 30_000)
+    @Scheduled(fixedDelay = 5_000)
     public void sendChuckQuotes() {
-        Task task = new Task("aaa", "bbb", LocalDate.now(), LocalTime.now(), "ccc");
-
-        try {
-            sendPushMessage(task);
-        } catch (InterruptedException | ExecutionException e) {
-            TaskmanagerApplication.logger.error("send chuck joke", e);
+        Task task= new Task("cds","cdas",LocalDate.now(),LocalTime.now(),"cdssd");
+//        List<Task> tasks = taskService.getAll();
+//        for (int i = 0; i < taskService.count(); i++) {
+//            task = tasks.get(i);
+//            if (task.getDate().isEqual(LocalDate.now()))
+//                if (task.getTime().isAfter(LocalTime.now()))
+                        try {
+                            sendPushMessage(task);
+                        } catch (InterruptedException | ExecutionException e) {
+                            TaskmanagerApplication.logger.error("send task", e);
+                        }
+            //        }
         }
-    }
 
     void sendPushMessage(Task task) throws InterruptedException, ExecutionException {
         Map<String, String> data = new HashMap<>();
         data.put("id", String.valueOf(task.getId()));
         data.put("taskName", task.getTaskName());
-//        data.put("descriptionTask", task.getDescriptionTask());
-//        data.put("date", String.valueOf(task.getDate()));
-//        data.put("contacts", task.getContacts());
-//        data.put("time", String.valueOf(task.getTime()));
+        data.put("descriptionTask", task.getDescriptionTask());
+        data.put("date", String.valueOf(task.getDate()));
+        data.put("contacts", task.getContacts());
+        data.put("time", String.valueOf(task.getTime()));
         data.put("seq", String.valueOf(this.seq++));
         data.put("ts", String.valueOf(System.currentTimeMillis()));
 
-        System.out.println("Sending chuck joke...");
+        System.out.println("Sending task...");
         this.fcmClient.send(data);
     }
 }
