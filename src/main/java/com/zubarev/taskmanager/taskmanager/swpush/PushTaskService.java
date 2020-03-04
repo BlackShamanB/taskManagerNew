@@ -58,6 +58,8 @@ public class PushTaskService {
         data.put("time", String.valueOf(task.getTime()));
         data.put("seq", String.valueOf(this.seq++));
         data.put("ts", String.valueOf(System.currentTimeMillis()));
+        String click_action="";
+        data.put("click_action",click_action);
 
         System.out.println("Sending task...");
         this.fcmClient.send(data);

@@ -26,13 +26,17 @@ async function init() {
     fetch('/register', { method: 'post', body: currentToken });
     showData();
 
-    messaging.onTokenRefresh(async () => {
-        console.log('token refreshed');
-        const newToken = await messaging.getToken();
-        fetch('/register', { method: 'post', body: currentToken });
-    });
 
 }
+
+messaging.onTokenRefresh(async () => {
+    console.log('token refreshed');
+    const newToken = await messaging.getToken();
+    fetch('/register', { method: 'post', body: currentToken });
+});
+
+
+
 
 async function showData() {
     const db = await getDb();

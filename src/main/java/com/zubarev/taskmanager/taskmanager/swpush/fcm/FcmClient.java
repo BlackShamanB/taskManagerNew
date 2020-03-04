@@ -4,8 +4,8 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
-import com.zubarev.taskmanager.taskmanager.swpush.FcmSettings;
 import com.zubarev.taskmanager.taskmanager.TaskmanagerApplication;
+import com.zubarev.taskmanager.taskmanager.swpush.FcmSettings;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class FcmClient{
+public class FcmClient {
 
     public FcmClient(FcmSettings settings) {
         Path p = Paths.get(settings.getServiceAccountFile());
@@ -32,17 +32,30 @@ public class FcmClient{
         }
     }
 
-    public void send(Map<String, String> data)
+    public String send(Map<String, String> data)
             throws InterruptedException, ExecutionException {
 
         Message message = Message.builder().putAllData(data).setTopic("chuck")
                 .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
-//                        .setNotification(new WebpushNotification(data.get("taskName"),
-//                                data.get("descriptionTask")+" "+data.get("contacts"), "mail2.png"))
+                        .setNotification(new WebpushNotification(data.get("taskName"),
+                                data.get("descriptionTask")+" "+data.get("contacts"), "mail2.png"))
                         .build())
                 .build();
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
         System.out.println("Sent message: " + response);
+        return response;
+    }
+
+    public String sendPersonal(Map<String, String> data, String clientToken)
+            throws ExecutionException, InterruptedException {
+        Message message = Message.builder().setToken(clientToken)
+                .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
+                        .setNotification(new WebpushNotification(data.get("taskName"),
+                                data.get("descriptionTask")+" "+data.get("contacts"), "mail2.png"))
+                        .build())
+                .build();
+        String response = FirebaseMessaging.getInstance().sendAsync(message).get();
+        return response;
     }
 
     public void subscribe(String topic, String clientToken) {
@@ -55,4 +68,14 @@ public class FcmClient{
             TaskmanagerApplication.logger.error("subscribe", e);
         }
     }
+    private WebpushNotification.Builder createBuilder(Map<String, String> data){
+        WebpushNotification.Builder builder = WebpushNotification.builder();
+        builder.addAction(new WebpushNotification
+                .Action(data.get("click_action"), "Открыть"))
+                .setImage("mail2.png")
+                .setTitle(data.get("descriptionTask"))
+                .setBody(data.get("contacts"));
+        return builder;
+    }
+
 }

@@ -58,17 +58,14 @@ messaging.setBackgroundMessageHandler(function(payload) {
 });
 
 
-messaging.onMessage(function(payload) {
-    const notificationTitle = 'Background Title (client)';
-    const notificationOptions = {
-        body: 'Background Body (client)',
-        icon: '/mail.png'
-    };
+if ('Notification' in window) {
+    var messaging = firebase.messaging();
 
-    return self.registration.showNotification(notificationTitle,
-        notificationOptions);
-});
-
+    messaging.onMessage(function (payload) {
+        console.log('Message received. ', payload);
+        new Notification(payload.notification.title, payload.notification);
+    });
+}
 
 const CACHE_NAME = 'my-site-cache-v1';
 const urlsToCache = [
